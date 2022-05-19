@@ -52,7 +52,8 @@ public class Cuenta {
 
   public void enviarMovimiento(double cuanto, boolean tipoMovimiento){
     Movimiento movimiento = new Movimiento(LocalDate.now(), cuanto, tipoMovimiento);
-    movimiento.agregateA(this);
+    setSaldo(movimiento.calcularValor(this));
+    movimientos.add(movimiento);
   }
 
   private boolean superaLosTresDepositos(){
@@ -87,12 +88,6 @@ public class Cuenta {
     if (saldo - cuanto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
     }
-  }
-
-
-  public void registrarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
-    Movimiento movimiento = new Movimiento(fecha, cuanto, esDeposito);
-    movimientos.add(movimiento);
   }
 
   public double getMontoExtraidoA(LocalDate fecha) {
