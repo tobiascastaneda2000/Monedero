@@ -27,15 +27,17 @@ public class Cuenta {
   }
 
   public void poner(double cuanto) {
-    if (this.valorNegativo(cuanto)) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }
+    validarDeposito(cuanto);
+    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);//6.2.7 Message Chains
+  }
 
-    if (this.superaLosTresDepositos()) {
+  private void validarDeposito(double cuanto){
+    if(this.superaLosTresDepositos()){
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
-
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);//6.2.7 Message Chains
+    if(this.valorNegativo(cuanto)){
+      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
+    }
   }
 
   private boolean superaLosTresDepositos(){
