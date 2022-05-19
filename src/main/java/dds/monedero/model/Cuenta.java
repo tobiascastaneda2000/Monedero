@@ -28,7 +28,7 @@ public class Cuenta {
 
   public void poner(double cuanto) {
     validarDeposito(cuanto);
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);//6.2.7 Message Chains
+    agregarMovimientoDeposito(cuanto);
   }
 
   private void validarDeposito(double cuanto){
@@ -38,6 +38,11 @@ public class Cuenta {
     if(this.valorNegativo(cuanto)){
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
     }
+  }
+
+  private void agregarMovimientoDeposito(double cuanto){
+    Movimiento movimiento = new Movimiento(LocalDate.now(), cuanto,true);
+    movimiento.agregateA(this);
   }
 
   private boolean superaLosTresDepositos(){
