@@ -16,7 +16,7 @@ public class Cuenta {
 
   public Cuenta() {
     saldo = 0;
-  }
+  } //Constructor innecesario, saldo ya inicializado por defecto
 
   public Cuenta(double montoInicial) {
     saldo = montoInicial;
@@ -31,16 +31,16 @@ public class Cuenta {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
     }
 
-    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {
+    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {//6.2.7 Message Chains
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
 
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
+    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);//6.2.7 Message Chains
   }
 
-  public void sacar(double cuanto) {
+  public void sacar(double cuanto) {//en vez de cuanto dice saldo
     if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
+      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo"); //mejorar la excepccion, sacar if
     }
     if (getSaldo() - cuanto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
@@ -61,14 +61,14 @@ public class Cuenta {
 
   public double getMontoExtraidoA(LocalDate fecha) {
     return getMovimientos().stream()
-        .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))
+        .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))//delegar
         .mapToDouble(Movimiento::getMonto)
         .sum();
   }
 
   public List<Movimiento> getMovimientos() {
     return movimientos;
-  }
+  }//Innesesario
 
   public double getSaldo() {
     return saldo;
