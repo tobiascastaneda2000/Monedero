@@ -108,7 +108,7 @@ public class Cuenta {
 
   public List<Movimiento> getMovimientos() {
     return movimientos;
-  }//Innesesario
+  }
 
   public double getSaldo() {
     return saldo;
