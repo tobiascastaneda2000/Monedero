@@ -8,6 +8,8 @@ import dds.monedero.exceptions.SaldoMenorException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 public class Cuenta {
 
@@ -94,10 +96,14 @@ public class Cuenta {
   }
 
   public double getMontoExtraidoA(LocalDate fecha) {
+    Stream<Movimiento> depositosDeFecha = getMovimientos().stream()
+            .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha));
+    return depositosDeFecha.mapToDouble(Movimiento::getMonto); //No me funciona el tipo de dato
+    /*
     return getMovimientos().stream()
         .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))//delegar
         .mapToDouble(Movimiento::getMonto)
-        .sum();
+        .sum();*/
   }
 
   public List<Movimiento> getMovimientos() {
